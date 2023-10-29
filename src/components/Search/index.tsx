@@ -27,6 +27,12 @@ export default class Search extends Component<Props, State> {
         this.saveToHistory();
     };
 
+    componentDidMount(): void {
+        if (this.state.query) {
+            this.handleClick();
+        }
+    }
+
     render() {
         return (
             <section className="search">
