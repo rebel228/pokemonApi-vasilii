@@ -24,15 +24,6 @@ main {
     animation: loading-spin infinite 1s linear;
 }
 
-@keyframes loading-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
 .error {
     padding: 1rem 2rem;
     border-radius: 0.5rem;
@@ -66,4 +57,13 @@ main {
 
 .pokemon__info {
     text-transform: capitalize;
+}
+
+@keyframes loading-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
