@@ -10,7 +10,7 @@ const ErrorController = () => {
 
     const onClick = () => setError(true);
 
-    return <Button onClick={onClick}></Button>;
+    return <Button onClick={onClick}>Error!</Button>;
 };
 
 export default ErrorController;
