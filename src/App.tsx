@@ -1,53 +1,33 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import './App.css';
 import ErrorBoundary from './components/Error';
 import ErrorController from './components/ErrorController';
+import Pokemons from './components/Pokemons';
 import Search from './components/Search';
 import { Pokemon } from './types';
 import { fetchPokemons } from './utils/pokemons';
-import Pokemons from './components/Pokemons';
 
-interface Props {}
-interface State {
-    query: string;
-    pokemons: Pokemon[];
-    isLoading: boolean;
-}
+const App = () => {
+    const [isLoading, setLoading] = useState(false);
+    const [pokemons, setPokemons] = useState<Pokemon[]>([]);
 
-class App extends Component<Props, State> {
-    state: State = {
-        query: '',
-        pokemons: [],
-        isLoading: false,
+    const getPokemons = (query: string) => {
+        setLoading(true);
+        fetchPokemons(query).then(setPokemons);
     };
 
-    constructor(props: Props) {
-        super(props);
-    }
-
-    getPokemons = (query: string) => {
-        this.setState((state) => ({ ...state, isLoading: true }));
-
-        fetchPokemons(query).then((pokemons) =>
-            this.setState(() => ({ pokemons, isLoading: false }))
-        );
-    };
-
-    render() {
-        return (
-            <ErrorBoundary>
-                <main>
-                    <ErrorController />
-                    <Search onClick={this.getPokemons} />
-                    {this.state.isLoading ? (
-                        <div className="loading" />
-                    ) : (
-                        <Pokemons pokemons={this.state.pokemons} />
-                    )}
-                </main>
-            </ErrorBoundary>
-        );
-    }
-}
-
+    return (
+        <ErrorBoundary>
+            <main>
+                <ErrorController />
+                <Search onClick={getPokemons} />
+                {isLoading ? (
+                    <div className="loading" />
+                ) : (
+                    <Pokemons pokemons={pokemons} />
+                )}
+            </main>
+        </ErrorBoundary>
+    );
+};
 export default App;

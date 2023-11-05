@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import Button from '../Button';
 import Input from '../Input';
 
@@ -6,46 +6,22 @@ interface Props {
     onClick: (input: string) => void;
 }
 
-interface State {
-    query: string;
-}
+const Search = ({ onClick }: Props) => {
+    const [query, setQuery] = useState('');
 
-export default class Search extends Component<Props, State> {
-    state: State = {
-        query: localStorage.getItem('history') || '',
+    const handleClick = () => {
+        onClick(query);
+        saveToHistory();
     };
 
-    saveToHistory = () => {
-        const query = this.state.query;
+    const saveToHistory = () => localStorage.setItem('history', query);
 
-        localStorage.setItem('history', query);
-    };
+    return (
+        <section className="search">
+            <Input onChange={setQuery} value={query || ''} />
+            <Button onClick={handleClick} />
+        </section>
+    );
+};
 
-    handleClick = () => {
-        this.props.onClick(this.state.query);
-
-        this.saveToHistory();
-    };
-
-    componentDidMount(): void {
-        if (this.state.query) {
-            this.handleClick();
-        }
-    }
-
-    render() {
-        return (
-            <section className="search">
-                <div>
-                    <Input
-                        onChange={(query) =>
-                            this.setState(() => ({ ...this.state, query }))
-                        }
-                        value={this.state.query || ''}
-                    />
-                    <Button onClick={this.handleClick} />
-                </div>
-            </section>
-        );
-    }
-}
+export default Search;
