@@ -4,7 +4,9 @@ import { Pokemon } from '../../types';
 export const SinglePokemon = () => {
     const { item } = useLoaderData() as { item: Pokemon };
 
-    console.log(item);
+    if (!item) {
+        return null;
+    }
 
     return (
         <div className="pokemon">
