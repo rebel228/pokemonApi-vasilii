@@ -1,32 +1,25 @@
-import { Pokemon } from '../../types';
+import { useContext } from 'react';
+import { PaginationState } from '../../providers/Pagination';
+import { PokemonState } from '../../providers/Pokemons';
 import Pokemons from '../Pokemons';
 import Search from '../Search';
 
-interface ListProps {
-    isLoading: boolean;
-    pokemons: Pokemon[];
-    limit: number;
-    offset: number;
-    pages: number[];
-    page: number;
-    setLimit: (limit: number) => void;
-    onSearch: (query: string) => void;
-    getByPage: (num: number) => void;
-    onChoose: (name: string) => void;
-}
+// interface ListProps {
+//     isLoading: boolean;
+//     pokemons: Pokemon[];
+//     limit: number;
+//     offset: number;
+//     pages: number[];
+//     page: number;
+//     setLimit: (limit: number) => void;
+//     onSearch: (query: string) => void;
+//     getByPage: (num: number) => void;
+//     onChoose: (name: string) => void;
+// }
 
-export const List = (props: ListProps) => {
-    const {
-        isLoading,
-        pokemons,
-        limit,
-        pages,
-        page,
-        setLimit,
-        onSearch,
-        getByPage,
-        onChoose,
-    } = props;
+export const List = () => {
+    const data = useContext(PokemonState);
+    const pagination = useContext(PaginationState);
 
     return (
         <div
@@ -36,8 +29,12 @@ export const List = (props: ListProps) => {
                 justifyContent: 'center',
             }}
         >
-            <Search limit={limit} onLimitChange={setLimit} onClick={onSearch} />
-            {isLoading ? (
+            <Search
+                limit={pagination.limit}
+                onLimitChange={pagination.onLimitChange}
+                onClick={data.getPokemons}
+            />
+            {data.isLoading ? (
                 <div className="loading" />
             ) : (
                 <div
@@ -47,7 +44,10 @@ export const List = (props: ListProps) => {
                         flexDirection: 'column',
                     }}
                 >
-                    <Pokemons pokemons={pokemons} onClick={onChoose} />
+                    <Pokemons
+                        pokemons={data.pokemons}
+                        onClick={data.onNewQuery}
+                    />
                     <div
                         style={{
                             display: 'flex',
@@ -55,7 +55,7 @@ export const List = (props: ListProps) => {
                             gap: '16px',
                         }}
                     >
-                        {pages.map((item) => (
+                        {pagination.pages.map((item) => (
                             <div
                                 key={item}
                                 style={{
@@ -63,9 +63,11 @@ export const List = (props: ListProps) => {
                                     border: '1px solid',
                                     cursor: 'pointer',
                                     borderColor:
-                                        page === item ? 'white' : 'gray',
+                                        pagination.page === item
+                                            ? 'white'
+                                            : 'gray',
                                 }}
-                                onClick={() => getByPage(item)}
+                                onClick={() => data.getPokemonsByPage(item)}
                             >
                                 {item + 1}
                             </div>

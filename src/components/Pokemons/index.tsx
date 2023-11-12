@@ -12,6 +12,7 @@ const Pokemons = ({ pokemons, onClick }: Props) => {
                 <div
                     key={item.name + item.description}
                     className="pokemon"
+                    test-id={item.name + item.description}
                     onClick={() => onClick(item.name)}
                 >
                     <div className="pokemon__media">
