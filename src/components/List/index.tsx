@@ -4,19 +4,6 @@ import { PokemonState } from '../../providers/Pokemons';
 import Pokemons from '../Pokemons';
 import Search from '../Search';
 
-// interface ListProps {
-//     isLoading: boolean;
-//     pokemons: Pokemon[];
-//     limit: number;
-//     offset: number;
-//     pages: number[];
-//     page: number;
-//     setLimit: (limit: number) => void;
-//     onSearch: (query: string) => void;
-//     getByPage: (num: number) => void;
-//     onChoose: (name: string) => void;
-// }
-
 export const List = () => {
     const data = useContext(PokemonState);
     const pagination = useContext(PaginationState);
